@@ -1,18 +1,21 @@
 <?php 
 
-function getProducts (){
-    $db = new PDO('mysql:host=localhost;'.'dbname=db_tpe;charset=utf8', 'root', '');
-
-    $sentencia = $db->prepare("select * from producto");
-    $sentencia->execute();
-    $producto = $sentencia->fetchAll(PDO::FETCH_OBJ);
-    return $producto;
-
+function connectToDb() {
+    return new PDO('mysql:host=localhost;'.'dbname=db_tpe;charset=utf8', 'root', ''); 
 }
 
-function insertProduct($id_producto, $precio, $color, $tamaño, $id_estilo) {
-    $db = new PDO('mysql:host=localhost;'.'dbname=db_tpe;charset=utf8', 'root', '');
-    $sentencia = $db->prepare("INSERT INTO producto(id_producto, precio, color, tamaño, id_estilo) VALUES(?, ?, ?, ?, ?)");
-    $sentencia->execute(array($id_producto, $precio, $color, $tamaño, $id_estilo));
+
+
+function insertProduct($precio, $color, $tamaño, $fk_id_estilo) {
+    $db = connectToDb();
+    $sentencia = $db->prepare("INSERT INTO producto(precio, color, tamaño, fk_id_estilo) VALUES(?, ?, ?, ?)");
+    $sentencia->execute(array($precio, $color, $tamaño, $fk_id_estilo));
 
 };
+
+function deleteProductFromDb ($id) {
+    $db = connectToDb();
+    $sentencia = $db->prepare("DELETE FROM producto WHERE id_producto=?");
+    $sentencia->execute(array($id));
+}
+

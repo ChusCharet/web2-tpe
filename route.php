@@ -1,6 +1,7 @@
 <?php
 require_once "producto.php";
 require_once "db.php";
+require_once "Controller/ProductController.php";
 
 define('BASE_URL', '//'.$_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']).'/');
 
@@ -16,10 +17,18 @@ else {
 
 $params = explode('/', $action); //parsea la acción
 
+$productController = new ProductController();
+
 //determina que camino seguir según la acción
 switch ($params[0]) {
     case 'home':
-        showHome();
+        $productController->showHome();
+        break;
+    case 'createProduct':
+        createProduct();
+        break;
+    case 'deleteProduct':
+        deleteProduct($params[1]);
         break;
     default:
         echo('404 Page not found');
